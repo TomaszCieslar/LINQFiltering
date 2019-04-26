@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace LINQFiltering
 {
@@ -6,7 +9,24 @@ namespace LINQFiltering
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var cars = ProcessFile("fuel.csv");
+
+            foreach (var item in cars)
+            {
+                Console.WriteLine(item.Name);
+            }
         }
+
+        private static List<Car> ProcessFile(string path)
+        {
+           return
+                File.ReadAllLines(path)
+                 .Skip(1)
+                 .Where(line => line.Length > 1)
+                 .Select(Car.ParseFromCSV).ToList();
+
+        }
+         
+    
     }
 }
